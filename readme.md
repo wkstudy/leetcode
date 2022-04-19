@@ -9,3 +9,7 @@
 ### 栈和队列
 
 4. 20.js
+5. 71.js todo
+6. 144.js done
+7. 150.js done
+8. 199.js done
