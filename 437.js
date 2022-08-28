@@ -12,6 +12,7 @@
  * @param {number} targetSum
  * @return {number}
  */
+// 思路1 没出来
 var pathSum = function (root, targetSum) {
   //  1.深度遍历获取所有路径
   // 2. 所有路径中找到符合条件的
@@ -94,3 +95,52 @@ function cal(arr, targetSum, startWidth) {
 
   return res;
 }
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {number}
+ */
+// 思路2  不要遍历拿到所有的路径，直接从第一个节点开始递归遍历，从该节点开始计算(递归该包含节点的所有路径)，计算从该节点开始的所有和，得到最后的结果
+var pathSum = function (root, targetSum) {
+  let res = 0;
+  function dfs(point, num) {
+    // 计算节点
+    if (point) {
+      let tmp = num + point.val;
+      if (tmp === targetSum) {
+        res++;
+      }
+      if (point.left) {
+        dfs(point.left, tmp);
+      }
+      if (point.right) {
+        dfs(point.right, tmp);
+      }
+    }
+  }
+  function dfs2(p) {
+    // 遍历所有节点
+    if (p) {
+      if (p.left) {
+        dfs(p.left, p.val);
+        dfs2(p.left);
+      }
+      if (p.right) {
+        dfs(p.right, p.val);
+        dfs2(p.right);
+      }
+      if (p.val === targetSum) res++;
+    }
+  }
+  dfs2(root);
+  return res;
+};
