@@ -67,3 +67,54 @@ var lowestCommonAncestor = function (root, p, q) {
     }
   }
 };
+
+// 思路三  做出来了
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+var lowestCommonAncestor = function (root, p, q) {
+  // root肯定是能找到p q
+  // root往下dfs他的left right节点， 在left、right节点里分别找pq
+  // 如果left里找到，那么就接着从left开始找，
+  // 如果是right里找到，那么从right里找，
+  // 如果left\right都找不到，说明当前节点就是答案
+  function dfs(root) {
+    if (!root) return false;
+    if (!root.left && !root.right) return false;
+    let leftRes = [findPoint(root.left, p), findPoint(root.left, q)];
+    let rightRes = [findPoint(root.right, p), findPoint(root.right, q)];
+    if (root.left) {
+      if (leftRes[0] && leftRes[1]) {
+        res = root.left;
+        return dfs(root.left);
+      }
+    }
+
+    if (root.right) {
+      if (rightRes[0] && rightRes[1]) {
+        res = root.right;
+        return dfs(root.right);
+      }
+    }
+    return;
+  }
+  function findPoint(p, target) {
+    if (!p) return false;
+    if (p === target) return true;
+    return findPoint(p.left, target) || findPoint(p.right, target);
+  }
+  let res = root;
+  dfs(root);
+  return res;
+};
